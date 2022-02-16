@@ -11,10 +11,11 @@ import (
 
 const addTicker = `-- name: AddTicker :one
 INSERT INTO stock_tickers (
+    ticker_id,
     company_name,
     ticker
 ) VALUES (
-    $1, $2
+    uuid_generate_v4(), $1, $2
 ) RETURNING ticker_id, company_name, ticker, favorited, tags, added_date_time
 `
 
@@ -25,6 +26,27 @@ type AddTickerParams struct {
 
 func (q *Queries) AddTicker(ctx context.Context, arg AddTickerParams) (StockTicker, error) {
 	row := q.db.QueryRowContext(ctx, addTicker, arg.CompanyName, arg.Ticker)
+	var i StockTicker
+	err := row.Scan(
+		&i.TickerID,
+		&i.CompanyName,
+		&i.Ticker,
+		&i.Favorited,
+		&i.Tags,
+		&i.AddedDateTime,
+	)
+	return i, err
+}
+
+const addToFavorites = `-- name: AddToFavorites :one
+UPDATE stock_tickers
+SET favorited = TRUE
+WHERE ticker_id = $1
+RETURNING ticker_id, company_name, ticker, favorited, tags, added_date_time
+`
+
+func (q *Queries) AddToFavorites(ctx context.Context, tickerID uuid.UUID) (StockTicker, error) {
+	row := q.db.QueryRowContext(ctx, addToFavorites, tickerID)
 	var i StockTicker
 	err := row.Scan(
 		&i.TickerID,
@@ -106,6 +128,27 @@ func (q *Queries) ListTickers(ctx context.Context, arg ListTickersParams) ([]Sto
 		return nil, err
 	}
 	return items, nil
+}
+
+const removeFromFavorites = `-- name: RemoveFromFavorites :one
+UPDATE stock_tickers
+SET favorited = FALSE
+WHERE ticker_id = $1
+RETURNING ticker_id, company_name, ticker, favorited, tags, added_date_time
+`
+
+func (q *Queries) RemoveFromFavorites(ctx context.Context, tickerID uuid.UUID) (StockTicker, error) {
+	row := q.db.QueryRowContext(ctx, removeFromFavorites, tickerID)
+	var i StockTicker
+	err := row.Scan(
+		&i.TickerID,
+		&i.CompanyName,
+		&i.Ticker,
+		&i.Favorited,
+		&i.Tags,
+		&i.AddedDateTime,
+	)
+	return i, err
 }
 
 const updateTicker = `-- name: UpdateTicker :one

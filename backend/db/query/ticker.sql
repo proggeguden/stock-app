@@ -1,9 +1,10 @@
 -- name: AddTicker :one
 INSERT INTO stock_tickers (
+    ticker_id,
     company_name,
     ticker
 ) VALUES (
-    $1, $2
+    uuid_generate_v4(), $1, $2
 ) RETURNING *;
 
 -- name: GetTicker :one
@@ -25,3 +26,15 @@ RETURNING *;
 -- name: DeleteTicker :exec
 DELETE FROM stock_tickers
 WHERE ticker_id = $1;
+
+-- name: AddToFavorites :one
+UPDATE stock_tickers
+SET favorited = TRUE
+WHERE ticker_id = $1
+RETURNING *;
+
+-- name: RemoveFromFavorites :one
+UPDATE stock_tickers
+SET favorited = FALSE
+WHERE ticker_id = $1
+RETURNING *;

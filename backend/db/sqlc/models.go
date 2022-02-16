@@ -3,7 +3,6 @@
 package db
 
 import (
-	"database/sql"
 	"time"
 
 	"github.com/google/uuid"
@@ -14,7 +13,7 @@ type StockTicker struct {
 	TickerID      uuid.UUID
 	CompanyName   string
 	Ticker        string
-	Favorited     sql.NullBool
+	Favorited     bool
 	Tags          pqtype.NullRawMessage
 	AddedDateTime time.Time
 }
