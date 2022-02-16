@@ -3,7 +3,7 @@
 ## Prerequisites
 * [Docker](https://www.docker.com/)
 * [Goose](https://github.com/pressly/goose)
-* [SQLC](https://github.com/kyleconroy/sqlc)
+* [SQLC](https://github.com/kyleconroy/sqlc) Documentation: (https://docs.sqlc.dev/en/stable/index.html)
 
 ## Commands
 
