@@ -22,3 +22,22 @@ Migrate up / down
 goose postgres "user=root password=secret dbname=stock_app sslmode=disable" up
 goose postgres "user=root password=secret dbname=stock_app sslmode=disable" down
 ```
+
+## Repository
+
+* [SQLC] (https://github.com/kyleconroy/sqlc)
+
+Create sqlc.yaml file
+```bash
+init sqlc
+```
+Lim inn dette i sqlc.yaml
+```bash
+version: 1
+packages:
+  - path: "./db/sqlc"
+    name: "db"
+    engine: "postgresql"
+    schema: "./db/migration"
+    queries: "./db/query"
+```
