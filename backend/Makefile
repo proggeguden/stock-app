@@ -14,6 +14,6 @@ migratedown:
 	goose postgres "user=root password=secret dbname=stock_app sslmode=disable" down
 
 sqlc:
-	docker run --rm -v C:\Users\jakob\Desktop\StockApp\backend:/src -w /src kjconroy/sqlc generate
+	docker run --rm -v C:\Users\jakob\Desktop\stock-app\backend:/src -w /src kjconroy/sqlc generate
 
 .PHONY: postgres createdb dropdb migrateup migratedown sqlc
