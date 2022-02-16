@@ -23,6 +23,12 @@ goose postgres "user=root password=secret dbname=stock_app sslmode=disable" up
 goose postgres "user=root password=secret dbname=stock_app sslmode=disable" down
 ```
 
+Set up Go module and install all dependencies
+```bash
+go mod init github.com/proggeguden/stock-app/backend
+go mod tidy
+```
+
 ## Repository
 
 * [SQLC] (https://github.com/kyleconroy/sqlc)
@@ -40,4 +46,10 @@ packages:
     engine: "postgresql"
     schema: "./db/migration"
     queries: "./db/query"
+```
+
+Generate SQL code
+```bash
+sqlc generate //funker bare på linux
+docker run --rm C:\Users\jakob\Desktop\stock-app\backend:/src -w /src kjconroy/sqlc generate 
 ```
